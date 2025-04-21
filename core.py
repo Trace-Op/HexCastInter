@@ -4,10 +4,11 @@ from numbers import Number
 
 from copy import deepcopy
 
-from iota.Vector import Vector
-from iota.Entity import Entity
+from iota.Vector  import Vector
+from iota.Entity  import Entity
+from iota.Garbage import Garbage
 
-Iota = Union[bool, None, Number, str, Tuple, Vector, Entity]
+Iota = Union[bool, None, Number, str, Tuple, Vector, Entity, Garbage]
 
 @dataclass
 class VMFrame:
@@ -19,7 +20,7 @@ class VMFrame:
     user_definitions: Dict[str, tuple[str]] = field(default_factory=dict)
     quote_buffer: List[str] = field(default_factory=list)
     quote_depth: int = 0
-    player: ["Entity" , None] = None
+    player: Union["Entity", None] = None
 
     def __deepcopy__(self, memo):
         # override since we don't want secondary instances of the parent machine in saved states
@@ -45,6 +46,7 @@ class Operation:
     game_name:str
     parameters: List[Iota]
     output: List[Iota]
+    alias: List[str] = field(default_factory=list)
 
     def execute(self, frame: VMFrame):
         raise NotImplementedError()

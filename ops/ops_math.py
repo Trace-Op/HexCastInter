@@ -10,22 +10,40 @@ class AddOp(core.Operation):
         (core.Vector, core.Vector): (core.Vector,),
         (core.Vector, core.Number): (core.Vector,),
         (core.Number, core.Vector): (core.Vector,),
+        (tuple, tuple): (tuple,),
     }
 
     def __init__(self):
         super().__init__(
             mnemonic="ADD",
-            signature="Num|Vec, Num|Vec -> Num|Vec",
+            signature="(Num|Vec, Num|Vec -> Num|Vec) or (List, List -> List)",
             name="Add",
             game_name="Additive Distillation",
-            parameters=(Union[core.Number, core.Vector], Union[core.Number, core.Vector],),
-            output=(Union[core.Number, core.Vector],)
+            parameters=(Union[core.Number, core.Vector, tuple], Union[core.Number, core.Vector, tuple],),
+            output=(Union[core.Number, core.Vector, tuple],),
+            alias=["CONCAT"],
         )
 
     def execute(self, frame: core.VMFrame):
+        if len(frame.stack) == 0:
+            frame.stack.append(core.Garbage())
+            frame.stack.append(core.Garbage())
+            return
+        
+        if len(frame.stack) == 1:
+            frame.stack.append(core.Garbage())
+            return
+
         b = frame.stack.pop()
         a = frame.stack.pop()
-        r = a + b  # type checking supported by Vector.__add__ and Vector.__radd__
+
+        try:
+            r = a + b
+        except TypeError as e:
+            frame.stack.append(core.Garbage())
+            frame.stack.append(core.Garbage())
+            return
+
         frame.stack.append(r)
 
     def infer_output_type(self, args: list):
@@ -35,6 +53,24 @@ class AddOp(core.Operation):
             raise ValueError("ADD: Bad operands")
         else:
             return r_type
+    
+    tests = [
+        ("basic addition", "5 1 ADD", [6]),
+        ("vector addition", "3 0 1 PACKVEC 4 1 0 PACKVEC ADD", [core.Vector(7, 1, 1)]),
+        ("scalar broadcast (right)", "0 0 1 PACKVEC 1 ADD", [core.Vector(1, 1, 2)]),
+        ("scalar broadcast (left)", "1 3 4 5 PACKVEC ADD", [core.Vector(4, 5, 6)]),
+        ("List concatonation", "4 5 6 3 PACK 7 8 9 3 PACK ADD", [(4, 5, 6, 7, 8, 9,)]),
+        ("insufficient parameters 0 of 2", "ADD", [core.Garbage(), core.Garbage()]),
+        ("insufficient parameters 1 of 2", "5 ADD", [5, core.Garbage()]),
+        ("invalid type (left)", "PLAYER 5 ADD", [core.Garbage(), core.Garbage()]),
+        ("invalid type (right)", "5 PLAYER ADD", [core.Garbage(), core.Garbage()]),
+        ("invalid types", "PLAYER PLAYER ADD", [core.Garbage(), core.Garbage()]),
+        ("incompatible types (List, Num)", "LIST 5 ADD", [core.Garbage(), core.Garbage()]),
+        ("incompatible types (Num, List)", "5 LIST ADD", [core.Garbage(), core.Garbage()]),
+        ("incompatible types (Vec, List)", "1 0 0 PACKVEC LIST ADD", [core.Garbage(), core.Garbage()]),
+        ("incompatible types (List, Vec)", "LIST 1 0 0 PACKVEC ADD", [core.Garbage(), core.Garbage()]),
+        ("incompatible types (List, str)", "LIST $pattern ADD", [core.Garbage(), core.Garbage()]),
+    ]
 
 
 class SubOp(core.Operation):

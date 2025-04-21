@@ -35,6 +35,8 @@ class StackMachine:
 
     def register_op(self, op: Operation):
         self.operations[op.mnemonic] = op
+        for alias in op.alias:
+            self.operations[alias] = op
 
     def execute(self, instr):
         debug = self.debug
@@ -43,11 +45,11 @@ class StackMachine:
             prev_frame = deepcopy(self.frame)
             self._history.append(instr)
         try:
-            if instr in self.operations:
-                self.operations[instr].execute(self.frame)
-            elif instr in self.frame.user_definitions:
+            if instr in self.frame.user_definitions:
                 for token in self.frame.user_definitions[instr]:
                     self.process_token(token)
+            elif instr in self.operations:
+                self.operations[instr].execute(self.frame)
             else:
                 raise ValueError(f"Unknown instruction: {instr}")
         except Exception as err:

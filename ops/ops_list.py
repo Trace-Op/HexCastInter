@@ -58,22 +58,6 @@ class ListSingleOp(core.Operation):
         e = frame.stack.pop()
         frame.stack.append(tuple([e]))
 
-class ListConcatOp(core.Operation):
-    def __init__(self):
-        super().__init__(
-            mnemonic="CONCAT",
-            signature="List, List -> List",
-            name="Concatenate Lists",
-            game_name="Additive Distillation",
-            parameters=[tuple, tuple],
-            output=[tuple]
-        )
-    def execute(self, frame: VMFrame):
-        a = frame.stack.pop()
-        b = frame.stack.pop()
-        r = b + a
-        frame.stack.append(r)
-
 class LengthOp(core.Operation):
     def __init__(self):
         super().__init__(

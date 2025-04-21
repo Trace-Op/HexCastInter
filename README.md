@@ -16,13 +16,25 @@ python hexcaster.py [file]
 - '#' denotes a comment in files, any characters after '#' will be ignored
 
 
+### Evaluation Model:
+Hexcasting Mod uses a direct evaluation model where tokens are drawn as glyphs and immediatly evaluated.
+HexCastInter follows the same pattern, glyphs other than numbers are written as string litteral and processed directly by the stack machine.
+as such the line:
+```
+4 5 ADD [ 6 7 8 ]
+```
+places 4 and 5 on the stack, performs the add operation (popping 4 and 5, pushing 9),
+starts a quote, adds the strings '6' '7' '8', ends the quote and pushes the quote to the stack.
+at the end of this sequence the stack is [9, ('6', '7', '8',)]
+
+### Project Status:
 This project is still very much a work in progress.
-Stack objects are still mostly python types.
-Not all glyphs/operations are implemented. I've done my best to make sure most reflect their in-game behavior when given the right arguments on the stack.
-The Garbage object is not implemented yet so failures do not match game behavior.
+Not all glyphs/operations are implemented. A list of of operations available can be found using the command "!ops"
+I've done my best to make sure most reflect their in-game behavior when given the right arguments on the stack.
+Mishap/Garbage support is incomplete.
 
 ### Roadmap
-- [ ] unit test harness for operations
+- [x] unit test harness for operations
 - [ ] stricter type checking on stack operations
 - [ ] include documentation on operations more than simple input->output
 - [ ] tree mapping and static analysis tooling

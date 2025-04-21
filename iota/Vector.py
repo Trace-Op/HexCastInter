@@ -45,8 +45,11 @@ class Vector:
             return Vector(0, 0, 0)
         return Vector(self.x / mag, self.y / mag, self.z / mag)
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return f"<{self.x:.2f}, {self.y:.2f}, {self.z:.2f}>"
+
+    def __repr__(self):
+        return f"Vector({self.x.__repr__()}, {self.y.__repr__()}, {self.z.__repr__()})"
 
     def __add__(self, other):
         if isinstance(other, numberType):
@@ -55,6 +58,10 @@ class Vector:
                 self.y + other,
                 self.z + other,
             )
+        
+        if not isinstance(other, type(self)):
+            raise TypeError
+        
         return Vector(
             self.x + other.x,
             self.y + other.y,
@@ -111,3 +118,8 @@ class Vector:
                 other / self.y,
                 other / self.z,
             )
+    
+    def __eq__(self, other):
+        return (self.x == other.x and 
+                self.y == other.y and
+                self.z == other.z)
