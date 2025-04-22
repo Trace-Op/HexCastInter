@@ -49,7 +49,7 @@ if __name__ == "__main__":
     for op_key in machine.operations:
         op = machine.operations[op_key]
         if op.mnemonic in seen:
-            print(f"{op_key} aliased as {op.mnemonic}")
+            print(f"{op_key} aliased as {op.mnemonic}\n")
             continue
 
         if "tests" in dir(op):
@@ -68,9 +68,10 @@ if __name__ == "__main__":
                     if machine.frame.stack == result:
                         print("\033[92mPASSED\033[0m")
                     else:
-                        print("\033[91mFAILED\033[0m\n", machine.frame.stack)
+                        print("\033[91mFAILED\033[0m ", machine.frame.stack)
                 except Exception as e:
                     print(f"\033[91mFAILED\033[0m\nEXCEPTION: {e}")
+            print()
 
         seen.add(op.mnemonic)
                 

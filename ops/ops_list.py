@@ -58,19 +58,6 @@ class ListSingleOp(core.Operation):
         e = frame.stack.pop()
         frame.stack.append(tuple([e]))
 
-class LengthOp(core.Operation):
-    def __init__(self):
-        super().__init__(
-            mnemonic="LEN",
-            signature="List -> Num",
-            name="Length",
-            game_name="Length Purification",
-            parameters=[tuple],
-            output=[int]
-        )
-    def execute(self, frame: VMFrame):
-        lst = frame.stack.pop()
-        frame.stack.append(len(lst))
 
 class SelectOp(core.Operation):
     def __init__(self):

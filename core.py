@@ -10,6 +10,7 @@ from iota.Garbage import Garbage
 
 Iota = Union[bool, None, Number, str, Tuple, Vector, Entity, Garbage]
 
+
 @dataclass
 class VMFrame:
     machine: Any
@@ -21,9 +22,11 @@ class VMFrame:
     quote_buffer: List[str] = field(default_factory=list)
     quote_depth: int = 0
     player: Union["Entity", None] = None
+    prng: Any = None
+    prng_state: tuple = None
 
     def __deepcopy__(self, memo):
-        # override since we don't want secondary instances of the parent machine in saved states
+        # override since we don't want secondary instances of the parent machine, or prng instance in saved states
         new = VMFrame(
             self.machine,
             deepcopy(self.stack, memo),
@@ -34,6 +37,8 @@ class VMFrame:
             self.quote_buffer.copy(),
             self.quote_depth,
             deepcopy(self.player, memo),
+            self.prng,
+            deepcopy(self.prng_state, memo),
         )
         return new
 

@@ -45,8 +45,8 @@ def run_command(machine: StackMachine, line: str):
     def _ops(args):
         for key in machine.operations:
             op = machine.operations[key]
-            out = f"{op.mnemonic} ({op.signature})"
-            out += " "*(47 - len(out)) + f"{op.game_name}"
+            out = f"{key} ({op.signature})"
+            out += " "*(65 - len(out)) + f"{op.game_name}"
             print(out)
 
     def _verbose_exec(args):

@@ -125,22 +125,6 @@ class CondSel(core.Operation):
         else:
             frame.stack.append(block_false)
 
-class BoolToNum(core.Operation):
-    def __init__(self):
-        super().__init__(
-            mnemonic="BOOLTOINT",
-            signature="Bool -> Num",
-            name="Bool to int",
-            game_name="Length Purification",  # that abs glyph gets around
-            parameters=[bool],
-            output=[int]
-        )
-    def execute(self, frame: VMFrame):
-        b = frame.stack.pop()
-        if b:
-            frame.stack.append(1)
-        else:
-            frame.stack.append(0)
 
 class NotOp(core.Operation):
     def __init__(self):

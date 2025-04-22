@@ -1,6 +1,6 @@
 from typing import Dict
 import sys
-
+from random import Random
 import core
 from core import *
 from copy import deepcopy
@@ -15,6 +15,8 @@ class StackMachine:
         self._history = []
         self.savestates: Dict[str, VMFrame]  = {}
         self.verbose_exec = True
+        self.frame.prng = Random(kwargs.get("seed", 42))
+        self.frame.prng_state = self.frame.prng.getstate()
 
     @property
     def history(self):
