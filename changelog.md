@@ -2,10 +2,12 @@
 
 ## [0.1.2] - 2025-04-22
 ### Features
+* Added a prng instance and prng_state to VMFrame. The prng_state is saved on calls to `RAND` allowing to reproducible random values when frame is saved.
 * Added `EXP` with alias `PROJECT`. provides support for numeric exponentiaion and vector projection. "Power Distillation".
 * Added math operations `FLOOR`, `CIEL`, `MOD`.
 * `iota.Vector.__pow__` implements scalar broadcasts.
 * `iota.Vector.__mod__` implements scalar broadcasts.
+* Added support for clamping a vector to a signed basis direction via `SIGN`.
 
 ### Testing
 * Test cases for `SUB`, `MUL`, `DIV`, `ABS`, `PACKVEC`, `UNPACKVEC`, `EXP`, `FLOOR`, `CEIL`, and `MOD`.
