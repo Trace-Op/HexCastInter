@@ -145,7 +145,7 @@ def run_file(machine, path: Path):
 if __name__ == "__main__":
     machine = StackMachine()
 
-    from ops import ops_math, ops_logic, ops_stack, ops_list, ops_rw, ops_meta, ops_constants, ops_entity
+    from ops import ops_math, ops_logic, ops_stack, ops_list, ops_rw, ops_meta, ops_constants, ops_entity, ops_trig
     load_operations(machine, ops_math)
     load_operations(machine, ops_logic)
     load_operations(machine, ops_stack)
@@ -154,6 +154,7 @@ if __name__ == "__main__":
     load_operations(machine, ops_meta)
     load_operations(machine, ops_constants)
     load_operations(machine, ops_entity)
+    load_operations(machine, ops_trig)
 
     if not machine.strict:
         from ops import ops_extensions

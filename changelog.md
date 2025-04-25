@@ -1,8 +1,20 @@
 # Changelog
 
+## [0.1.3] - 2025-04-24
+### Features
+* Added trigometric functions `SIN`, `COS`, `TAN`, `ASIN`, `ACOS`, `ATAN`, `ATAN2`
+* Added logorithm function `LOG`
+
+### Testing
+* Test cases for constants `TRUE`, `FALSE`, `NULL`, `TAU`, `PI`, `EULER`, `VECORIGIN`, `VECXPOS`, `VECXNEG`, `VECYPOS`, `VECYNEG`, `VECZPOS`, and `VECZNEG`.
+
+### Fixed
+* Corrected error in mnemonic spelling for `EULER`.
+
+
 ## [0.1.2] - 2025-04-22
 ### Features
-* Added a prng instance and prng_state to VMFrame. The prng_state is saved on calls to `RAND` allowing to reproducible random values when frame is saved.
+* Added a prng instance and prng_state to VMFrame. The prng_state is saved on calls to `RAND` allowing for reproducible random values when frame is saved.
 * Added `EXP` with alias `PROJECT`. provides support for numeric exponentiaion and vector projection. "Power Distillation".
 * Added math operations `FLOOR`, `CIEL`, `MOD`.
 * `iota.Vector.__pow__` implements scalar broadcasts.
